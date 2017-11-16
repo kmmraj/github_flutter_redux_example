@@ -1,6 +1,23 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-//apply plugin: 'jacoco'
+
+
+ext {
+    rekotlin_version = "0.1.0-SNAPSHOT"
+    rekotlin_router_version = "0.1.1"
+    junit_version = "4.12"
+    assertj_core_version="3.6.2"
+    android_support_lib_version = "25.3.1"
+    constraint_layout_version = "1.0.2"
+    github_api_version = "1.89"
+    leakcanary_android_version = "1.5.4"
+    mockito_core_version = "1.10.19"
+    android_support_lib_version = "25.4.0"
+    powermock_module_junit4_version = "1.7.0RC2"
+    powermock_api_mockito2_version = "1.7.0RC2"
+    robolectric_version = "3.5.1"
+    awaitility_version = "3.0.0"
+}
 
 android {
     compileSdkVersion 25
@@ -12,6 +29,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        buildConfigField 'boolean', 'ENABLE_MOCKS', 'false'
         javaCompileOptions {
             annotationProcessorOptions {
                 includeCompileClasspath false
@@ -27,6 +45,9 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debugTest {
+            buildConfigField 'boolean', 'ENABLE_MOCKS', 'true'
         }
     }
     packagingOptions {
@@ -48,24 +69,33 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    implementation 'com.android.support:appcompat-v7:25.3.1'
-    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
-    testImplementation 'junit:junit:4.12'
+    implementation "com.android.support:appcompat-v7:$android_support_lib_version"
+    implementation "com.android.support.constraint:constraint-layout:$constraint_layout_version"
+    implementation "com.android.support:support-v4:$android_support_lib_version"
+    implementation "com.android.support:design:$android_support_lib_version"
+    implementation "com.android.support:recyclerview-v7:$android_support_lib_version"
+
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
-
-    implementation 'tw.geothings.rekotlin:rekotlin:0.1.0-SNAPSHOT'
-    implementation 'org.rekotlinrouter:rekotlin-router:0.1.0'
-    implementation 'org.kohsuke:github-api:1.89'
-
-    implementation 'com.android.support:support-v4:25.3.1'
-    implementation 'com.android.support:design:25.3.1'
-    implementation 'com.android.support:support-v4:25.3.1'
-    implementation 'com.android.support:recyclerview-v7:25.3.1'
-    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation "tw.geothings.rekotlin:rekotlin:$rekotlin_version"
+    implementation "org.rekotlinrouter:rekotlin-router:$rekotlin_router_version"
+    implementation "org.kohsuke:github-api:$github_api_version"
 
 
-    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.4'
-    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
+
+    testImplementation "junit:junit:$junit_version"
+    testImplementation "org.assertj:assertj-core:$assertj_core_version"
+    testImplementation "org.robolectric:robolectric:$robolectric_version"
+    testImplementation "org.mockito:mockito-core:$mockito_core_version"
+    testImplementation "org.assertj:assertj-core:$assertj_core_version"
+    testImplementation "org.powermock:powermock-module-junit4:$powermock_module_junit4_version"
+    testImplementation "org.powermock:powermock-api-mockito2:$powermock_api_mockito2_version"
+    testImplementation "org.awaitility:awaitility:$awaitility_version"
+
+
+
+    debugCompile "com.squareup.leakcanary:leakcanary-android:$leakcanary_android_version"
+    implementation "com.squareup.leakcanary:leakcanary-android:$leakcanary_android_version"
+    releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:$leakcanary_android_version"
 
 
 }

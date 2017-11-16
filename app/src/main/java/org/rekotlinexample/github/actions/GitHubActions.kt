@@ -47,7 +47,7 @@ data class LoginResultAction(val userName: String,
                              var location:String? = null,
                              var avatarUrl:String? = null,
                              var createdAt:Date? = null) : Action
-class RepoDetailListAction : Action
+class RepoDetailListAction (val userName: String? = null, var token:String? = null) : Action
 class RepoListRetrivalStartedAction : Action
 data class RepoListCompletedAction(val repoList: List<RepoViewModel>): Action
 

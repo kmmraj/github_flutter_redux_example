@@ -1,7 +1,9 @@
 package org.rekotlinexample.github.middleware
 
 import org.rekotlinexample.github.AppController
+import org.rekotlinexample.github.BuildConfig
 import org.rekotlinexample.github.actions.*
+import org.rekotlinexample.github.apirequests.MockGitHubApiService
 import org.rekotlinexample.github.asyntasks.RepoListTask
 import org.rekotlinexample.github.asyntasks.UserLoginTask
 import org.rekotlinexample.github.mainStore
@@ -18,6 +20,7 @@ import tw.geothings.rekotlin.Middleware
 * Created by Mohanraj Karatadipalayam on 17/10/17.
 */
 
+var globalAppContext = AppController.instance?.applicationContext
 interface LoginTaskListenerInterface {
     fun onFinished(result: LoginCompletedAction)
 }
@@ -53,12 +56,7 @@ class RepoListTaskListenerMiddleware: RepoListTaskListenerInterface {
 
 }
 
-// TODO: Do it like below - change to traditional func signature
 
-//fun gitHubMiddlewarex(dispatch: (Action) -> Unit, getState:  () -> StateType?): (DispatchFunction) -> DispatchFunction
-
-//typealias DispatchFunction = (Action) -> Unit
-//typealias Middleware<State> = (DispatchFunction, () -> State?) -> (DispatchFunction) -> DispatchFunction
 internal val gitHubMiddleware: Middleware<GitHubAppState> = { dispatch, getState ->
     { next ->
         { action ->
@@ -70,7 +68,7 @@ internal val gitHubMiddleware: Middleware<GitHubAppState> = { dispatch, getState
                      executeSaveLoginData(action)
                  }
                  is RepoDetailListAction -> {
-                     executeGitHubRepoListRetrieval(dispatch)
+                     executeGitHubRepoListRetrieval(action,dispatch)
                  }
              }
 
@@ -80,11 +78,11 @@ internal val gitHubMiddleware: Middleware<GitHubAppState> = { dispatch, getState
     }
 }
 
-private fun executeGitHubRepoListRetrieval(dispatch: DispatchFunction) {
-    //Log.d(TAG, "Inside RepoDetailListAction")
-    var userName: String? = null
-    var token: String? = null
-    val context = AppController.instance?.applicationContext
+fun executeGitHubRepoListRetrieval(action: RepoDetailListAction,dispatch: DispatchFunction) : Boolean {
+
+    var userName: String? = action.userName
+    var token: String? = action.token
+    val context = globalAppContext
     context?.let {
         userName = PreferenceApiService.getPreference(context, GITHUB_PREFS_KEY_USERNAME)
         token = PreferenceApiService.getPreference(context, GITHUB_PREFS_KEY_TOKEN)
@@ -96,16 +94,20 @@ private fun executeGitHubRepoListRetrieval(dispatch: DispatchFunction) {
             val repoTask = RepoListTask(repoListTaskListenerMiddleware,
                     userName as String,
                     token as String)
-            // TODO - remove this
-          //  repoTask.githubService = MockGitHubApiService()
+
+            if(BuildConfig.ENABLE_MOCKS) {repoTask.githubService = MockGitHubApiService()}
             repoTask.execute()
             dispatch(RepoListRetrivalStartedAction())
+            return true
         }
+        return false
     }
+    return false
 }
 
 private fun executeSaveLoginData(action: LoggedInDataSaveAction) {
-    val context = AppController.instance?.applicationContext
+   // val context = AppController.instance?.applicationContext
+    val context = globalAppContext
     context?.let {
         PreferenceApiService.savePreference(context,
                 GITHUB_PREFS_KEY_TOKEN, action.token)
@@ -116,7 +118,7 @@ private fun executeSaveLoginData(action: LoggedInDataSaveAction) {
     }
 }
 
-private fun executeGitHubLogin(action: LoginAction, dispatch: DispatchFunction) {
+fun executeGitHubLogin(action: LoginAction, dispatch: DispatchFunction) {
     val loginTaskListenerMiddleware = LoginTaskListenerMiddleware()
 
 
@@ -124,8 +126,8 @@ private fun executeGitHubLogin(action: LoginAction, dispatch: DispatchFunction) 
             action.userName,
             action.password )
 
-    // TODO - remove this
-    //authTask.githubService = MockGitHubApiService()
+    if(BuildConfig.ENABLE_MOCKS) { authTask.githubService = MockGitHubApiService() }
+
     authTask.execute()
     dispatch(LoginStartedAction(action.userName))
 }

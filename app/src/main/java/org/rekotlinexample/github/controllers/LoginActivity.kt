@@ -81,10 +81,9 @@ class LoginActivity : Activity(), StoreSubscriber<AuthenticationState>, NextActi
     }
 
 
-
-        override fun newState(state: AuthenticationState) {
-            if (state.isFetching) {
-                ViewHelper.showProgress(show = true,
+    override fun newState(state: AuthenticationState) {
+        if (state.isFetching) {
+            ViewHelper.showProgress(show = true,
                         view = mViewForm,
                         progressView = mViewProgress,
                         resources = resources)

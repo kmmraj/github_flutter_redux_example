@@ -53,7 +53,7 @@ class WelcomeActivity : AppCompatActivity(), StoreSubscriber<GitHubAppState> {
         setContentView(R.layout.activity_welcome)
         mainStore.subscribe(this){ it.skipRepeats()}
 
-        mTvRepoCountDescription.setOnTouchListener(View.OnTouchListener { v, event ->
+        mTvRepoCountDescription.setOnTouchListener(View.OnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
                 startRepoListActivity()
                 return@OnTouchListener true
@@ -61,7 +61,7 @@ class WelcomeActivity : AppCompatActivity(), StoreSubscriber<GitHubAppState> {
             false
         })
 
-        mBtnViewRepo.setOnTouchListener(View.OnTouchListener { v, event ->
+        mBtnViewRepo.setOnTouchListener(View.OnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
                 startRepoListActivity()
                 return@OnTouchListener true
