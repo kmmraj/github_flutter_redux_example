@@ -76,24 +76,28 @@ class RepoListActivity : AppCompatActivity(), AdapterView.OnItemClickListener, S
     }
 
     fun startRepoDetailActivity(position: Int){
-        //TODO : Fix this with correct routes
-        val currentRoute: Route = mainStore.state.navigationState.route.clone() as Route
-        //val routes = arrayListOf(loginRoute, repoListRoute, repoDetailRoute)
-        val routes: Route?
-        if(!currentRoute.contains(repoDetailRoute)) {
-             routes = currentRoute.plus(repoDetailRoute) as Route
-        } else{
-            routes = currentRoute
-        }
-       
+
+        val routes: Route? = determineRoute()
         val setectedRepo = mListOfRepos?.get(position)
         setectedRepo?.let {
-            val actionData =  SetRouteSpecificData(route = routes, data = setectedRepo)
+            val actionData =  SetRouteSpecificData(route = routes as Route, data = setectedRepo)
             val action = SetRouteAction(route = routes)
             mainStore.dispatch(actionData)
             mainStore.dispatch(action)
         }
 
+    }
+
+    private fun determineRoute(): Route? {
+        val currentRoute: Route = mainStore.state.navigationState.route.clone() as Route
+        //val routes = arrayListOf(loginRoute, repoListRoute, repoDetailRoute)
+        val routes: Route?
+        if (!currentRoute.contains(repoDetailRoute)) {
+            routes = currentRoute.plus(repoDetailRoute) as Route
+        } else {
+            routes = currentRoute
+        }
+        return routes
     }
 
     override fun newState(state: RepoListState) {

@@ -11,14 +11,11 @@ import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mockito
 import org.mockito.Mockito.anyInt
-import org.rekotlinexample.github.actions.LoginAction
-import org.rekotlinexample.github.actions.LoginStartedAction
-import org.rekotlinexample.github.actions.RepoDetailListAction
-import org.rekotlinexample.github.actions.RepoListRetrivalStartedAction
-import org.robolectric.Robolectric
+import org.rekotlinexample.github.actions.*
+import org.rekotlinexample.github.mainStore
+import org.rekotlinexample.github.states.LoggedInState
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
-import org.robolectric.shadows.ShadowApplication
 import tw.geothings.rekotlin.Action
 import tw.geothings.rekotlin.DispatchFunction
 import tw.geothings.rekotlin.StateType
@@ -56,17 +53,18 @@ class TestGitHubMiddleware{
 
     var dispatch: ((Action) -> Unit)? = null
     internal val testStateReducer = TestStateReducer()
+    internal var testStore: Store<TestState>? = null
 
     @Before
     fun setUp(){
 
-        val store = Store(
+         testStore = Store(
                 reducer = testStateReducer::handleAction,
                 state = TestState(),
                 middleware = arrayListOf()
         )
         dispatch = {action: Action ->
-            store.dispatch(action)
+            testStore?.dispatch(action)
         }
 
     }
@@ -79,7 +77,7 @@ class TestGitHubMiddleware{
         val mockSharedPrefs = Mockito.mock(SharedPreferences::class.java)
         val mockSharedPrefsEditor = Mockito.mock(SharedPreferences.Editor::class.java)
         val mockContext = Mockito.mock(Context::class.java)
-        globalAppContext = mockContext
+        testAppContext = mockContext
         Mockito.`when`(mockContext.getSharedPreferences(anyString(), anyInt())).thenReturn(mockSharedPrefs)
         Mockito.`when`(mockSharedPrefs.edit()).thenReturn(mockSharedPrefsEditor)
         Mockito.`when`(mockSharedPrefsEditor.putString(anyString(), anyString())).thenReturn(mockSharedPrefsEditor)
@@ -87,30 +85,42 @@ class TestGitHubMiddleware{
 
         //When
         executeGitHubLogin(LoginAction("test","test"),dispatch = dispatch as DispatchFunction)
-        ShadowApplication.runBackgroundTasks()
-        Robolectric.flushBackgroundThreadScheduler()
+
 
         //Then
         await().atMost(5, TimeUnit.SECONDS).untilAsserted { object : Runnable {
             override fun run() {
-                // Assert
                 assertThat(testStateReducer.mAction).isInstanceOf(LoginStartedAction::class.java)
             }
         }}
+
+
+    }
+
+    @Test // @DisplayName("Verify executeGitHubLogin function dispatches StartLoginAction")
+    fun test_loginTaskListenerMiddleware_dispatches_StartLoginAction() {
+        //Given
+        val loginCompletedAction = LoginCompletedAction(userName = "test",loginStatus = LoggedInState.loggedIn)
+        val loginTaskListenerMiddleware = LoginTaskListenerMiddleware()
+       // mainStore = testStore
+
+        //When
+        loginTaskListenerMiddleware.onFinished(loginCompletedAction)
+
+
+        //Then
+        await().atMost(5, TimeUnit.SECONDS).untilAsserted { object : Runnable {
+            override fun run() {
+                assertThat(testStateReducer.mAction).isInstanceOf(LoginStartedAction::class.java)
+            }
+        }}
+
+
     }
 
     @Test // @DisplayName("Verify executeGitHubRepoListRetrieval function dispatches RepoListRetrivalStartedAction")
     fun test_executeGitHubRepoListRetrieval_dispatches_RepoListRetrivalStartedAction() {
         //Given
-//        val testStateReducer = TestStateReducer()
-//        val store = Store(
-//                reducer = testStateReducer::handleAction,
-//                state = TestState(),
-//                middleware = arrayListOf()
-//        )
-//        val dispatch = {action: Action ->
-//            store.dispatch(action)
-//        }
         val repoDetailListAction = RepoDetailListAction(userName = "test", token = "1818186")
 
 
@@ -120,26 +130,17 @@ class TestGitHubMiddleware{
         //Then
         await().atMost(5, TimeUnit.SECONDS).untilAsserted { object : Runnable {
             override fun run() {
-                // Assert
                 assertThat(testStateReducer.mAction).isInstanceOf(RepoListRetrivalStartedAction::class.java)
                 assertThat(executionResult).isTrue()
             }
         }}
+
 
     }
 
     @Test // @DisplayName("Verify executeGitHubRepoListRetrieval when token is null")
     fun test_executeGitHubRepoListRetrieval_when_token_is_null() {
         //Given
-//        val testStateReducer = TestStateReducer()
-//        val store = Store(
-//                reducer = testStateReducer::handleAction,
-//                state = TestState(),
-//                middleware = arrayListOf()
-//        )
-//        val dispatch = {action: Action ->
-//            store.dispatch(action)
-//        }
         val repoDetailListAction = RepoDetailListAction(userName = "test", token = null)
 
         //When
@@ -148,33 +149,19 @@ class TestGitHubMiddleware{
         //Then
         await().atMost(5, TimeUnit.SECONDS).untilAsserted { object : Runnable {
             override fun run() {
-                // Assert
                 assertThat(executionResult).isFalse()
             }
         }}
-
 
     }
 
     @Test // @DisplayName("Verify executeGitHubRepoListRetrieval when context is not null")
     fun test_executeGitHubRepoListRetrieval_when_context_is_not_null() {
         //Given
-//        val testStateReducer = TestStateReducer()
-//        val store = Store(
-//                reducer = testStateReducer::handleAction,
-//                state = TestState(),
-//                middleware = arrayListOf()
-//        )
-//        val dispatch = {action: Action ->
-//            store.dispatch(action)
-//        }
         val repoDetailListAction = RepoDetailListAction(userName = "test", token = null)
-
-
-
         val sharedPrefs = Mockito.mock(SharedPreferences::class.java)
         val context = Mockito.mock(Context::class.java)
-        globalAppContext = context
+        testAppContext = context
         Mockito.`when`(context.getSharedPreferences(anyString(), anyInt())).thenReturn(sharedPrefs)
         Mockito.`when`(sharedPrefs.getString(anyString(), ArgumentMatchers.isNull())).thenReturn("teststring")
 
@@ -184,7 +171,6 @@ class TestGitHubMiddleware{
         //Then
         await().atMost(5, TimeUnit.SECONDS).untilAsserted { object : Runnable {
             override fun run() {
-                // Assert
                 assertThat(executionResult).isTrue()
             }
         }}

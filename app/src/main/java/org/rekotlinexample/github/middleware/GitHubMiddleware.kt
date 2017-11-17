@@ -13,14 +13,13 @@ import org.rekotlinexample.github.apirequests.PreferenceApiService.GITHUB_PREFS_
 import org.rekotlinexample.github.apirequests.PreferenceApiService.GITHUB_PREFS_KEY_USERNAME
 import org.rekotlinexample.github.states.GitHubAppState
 import org.rekotlinexample.github.states.LoggedInState
-import tw.geothings.rekotlin.DispatchFunction
-import tw.geothings.rekotlin.Middleware
+import tw.geothings.rekotlin.*
 
 /**
 * Created by Mohanraj Karatadipalayam on 17/10/17.
 */
 
-var globalAppContext = AppController.instance?.applicationContext
+
 interface LoginTaskListenerInterface {
     fun onFinished(result: LoginCompletedAction)
 }
@@ -56,6 +55,8 @@ class RepoListTaskListenerMiddleware: RepoListTaskListenerInterface {
 
 }
 
+// App context for UT, must be never set in app run
+var testAppContext = AppController.instance?.applicationContext
 
 internal val gitHubMiddleware: Middleware<GitHubAppState> = { dispatch, getState ->
     { next ->
@@ -82,7 +83,7 @@ fun executeGitHubRepoListRetrieval(action: RepoDetailListAction,dispatch: Dispat
 
     var userName: String? = action.userName
     var token: String? = action.token
-    val context = globalAppContext
+    val context = testAppContext ?: AppController.instance?.applicationContext
     context?.let {
         userName = PreferenceApiService.getPreference(context, GITHUB_PREFS_KEY_USERNAME)
         token = PreferenceApiService.getPreference(context, GITHUB_PREFS_KEY_TOKEN)
@@ -106,8 +107,7 @@ fun executeGitHubRepoListRetrieval(action: RepoDetailListAction,dispatch: Dispat
 }
 
 private fun executeSaveLoginData(action: LoggedInDataSaveAction) {
-   // val context = AppController.instance?.applicationContext
-    val context = globalAppContext
+    val context = testAppContext ?: AppController.instance?.applicationContext
     context?.let {
         PreferenceApiService.savePreference(context,
                 GITHUB_PREFS_KEY_TOKEN, action.token)
