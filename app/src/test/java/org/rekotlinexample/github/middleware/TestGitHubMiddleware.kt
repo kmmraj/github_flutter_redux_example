@@ -39,10 +39,13 @@ class TestGitHubMiddleware{
                 is TestAction -> {
                     state = state.copy(name = action.name)
                 }
-                is LoginStartedAction -> {
-                    mAction = action
-                }
-                is RepoListRetrivalStartedAction -> {
+//                is LoginStartedAction -> {
+//                    mAction = action
+//                }
+//                is RepoListRetrivalStartedAction -> {
+//                    mAction = action
+//                }
+                else -> {
                     mAction = action
                 }
             }
@@ -97,25 +100,34 @@ class TestGitHubMiddleware{
 
     }
 
-    @Test // @DisplayName("Verify executeGitHubLogin function dispatches StartLoginAction")
-    fun test_loginTaskListenerMiddleware_dispatches_StartLoginAction() {
+    @Test // @DisplayName("Verify loginTaskListenerMiddleware function dispatches LoggedInDataSaveAction")
+    fun test_loginTaskListenerMiddleware_dispatches_LoggedInDataSaveAction() {
         //Given
-        val loginCompletedAction = LoginCompletedAction(userName = "test",loginStatus = LoggedInState.loggedIn)
+        val loginCompletedAction = LoginCompletedAction(userName = "test",
+                token = "181816",
+                loginStatus = LoggedInState.loggedIn)
         val loginTaskListenerMiddleware = LoginTaskListenerMiddleware()
-       // mainStore = testStore
 
         //When
-        loginTaskListenerMiddleware.onFinished(loginCompletedAction)
-
+        loginTaskListenerMiddleware.onFinished(loginCompletedAction, store = testStore as Store<StateType>)
 
         //Then
-        await().atMost(5, TimeUnit.SECONDS).untilAsserted { object : Runnable {
-            override fun run() {
-                assertThat(testStateReducer.mAction).isInstanceOf(LoginStartedAction::class.java)
-            }
-        }}
+        assertThat(testStateReducer.mAction).isInstanceOf(LoggedInDataSaveAction::class.java)
+    }
 
+    @Test // @DisplayName("Verify loginTaskListenerMiddleware function dispatches LoginFailedAction")
+    fun test_loginTaskListenerMiddleware_dispatches_LoginFailedAction() {
+        //Given
+        val loginCompletedAction = LoginCompletedAction(userName = "test",
+                message = "Error Message",
+                loginStatus = LoggedInState.notLoggedIn)
+        val loginTaskListenerMiddleware = LoginTaskListenerMiddleware()
 
+        //When
+        loginTaskListenerMiddleware.onFinished(loginCompletedAction, store = testStore as Store<StateType>)
+
+        //Then
+        assertThat(testStateReducer.mAction).isInstanceOf(LoginFailedAction::class.java)
     }
 
     @Test // @DisplayName("Verify executeGitHubRepoListRetrieval function dispatches RepoListRetrivalStartedAction")

@@ -12,6 +12,8 @@ import org.rekotlinexample.github.middleware.LoginTaskListenerInterface
 import org.rekotlinexample.github.states.LoggedInState
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import tw.geothings.rekotlin.StateType
+import tw.geothings.rekotlin.Store
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -47,7 +49,7 @@ class TestUserLoginTask{
 
         class TestLoginTaskListenerMiddleware : LoginTaskListenerInterface {
             var mLoginCompletedAction: LoginCompletedAction? = null
-            override fun onFinished(result: LoginCompletedAction){
+            override fun onFinished(result: LoginCompletedAction, store: Store<StateType>) {
                 mLoginCompletedAction = result
 
             }
@@ -87,9 +89,9 @@ class TestUserLoginTask{
         }
 
         class TestLoginTaskListenerMiddleware : LoginTaskListenerInterface {
-            var mLoginCompletedAction: LoginCompletedAction? = null
-            override fun onFinished(result: LoginCompletedAction){
-                mLoginCompletedAction = result
+            var action: LoginCompletedAction? = null
+            override fun onFinished(result: LoginCompletedAction, store: Store<StateType>) {
+                action = result
 
             }
         }
@@ -103,8 +105,8 @@ class TestUserLoginTask{
 
         Awaitility.await().atMost(5, TimeUnit.SECONDS).untilAsserted { object : Runnable {
             override fun run() {
-                assertThat(testLoginTaskListenerMiddleware.mLoginCompletedAction).isInstanceOf(LoginCompletedAction::class.java)
-                assertThat(testLoginTaskListenerMiddleware.mLoginCompletedAction?.loginStatus).isEqualTo(LoggedInState.notLoggedIn)
+                assertThat(testLoginTaskListenerMiddleware.action).isInstanceOf(LoginCompletedAction::class.java)
+                assertThat(testLoginTaskListenerMiddleware.action?.loginStatus).isEqualTo(LoggedInState.notLoggedIn)
             }
         }}
     }

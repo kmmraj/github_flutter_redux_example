@@ -21,21 +21,21 @@ import tw.geothings.rekotlin.*
 
 
 interface LoginTaskListenerInterface {
-    fun onFinished(result: LoginCompletedAction)
+    fun onFinished(result: LoginCompletedAction,store: Store<StateType>)
 }
 
 class LoginTaskListenerMiddleware : LoginTaskListenerInterface {
-    override fun onFinished(result: LoginCompletedAction){
+    override fun onFinished(result: LoginCompletedAction, store: Store<StateType>) {
 
         if (result.loginStatus == LoggedInState.loggedIn ) {
             result.token?.let {
-                mainStore.dispatch(result)
-                mainStore.dispatch(LoggedInDataSaveAction(userName = result.userName,
+                store.dispatch(result)
+                store.dispatch(LoggedInDataSaveAction(userName = result.userName,
                         token = result.token as String, loginStatus = LoggedInState.loggedIn))
             }
         } else {
             result.message?.let{
-                mainStore.dispatch(LoginFailedAction(userName = result.userName,
+                store.dispatch(LoginFailedAction(userName = result.userName,
                         message = result.message as String))
             }
 
@@ -45,12 +45,12 @@ class LoginTaskListenerMiddleware : LoginTaskListenerInterface {
 }
 
 interface RepoListTaskListenerInterface {
-    fun onFinished(result: RepoListCompletedAction)
+    fun onFinished(result: RepoListCompletedAction,store: Store<StateType>)
 }
 
 class RepoListTaskListenerMiddleware: RepoListTaskListenerInterface {
-    override fun onFinished(result: RepoListCompletedAction) {
-        mainStore.dispatch(result)
+    override fun onFinished(result: RepoListCompletedAction,store: Store<StateType>) {
+        store.dispatch(result)
     }
 
 }
@@ -96,7 +96,7 @@ fun executeGitHubRepoListRetrieval(action: RepoDetailListAction,dispatch: Dispat
                     userName as String,
                     token as String)
 
-            if(BuildConfig.ENABLE_MOCKS) {repoTask.githubService = MockGitHubApiService()}
+            whenDebug {repoTask.githubService = MockGitHubApiService()}
             repoTask.execute()
             dispatch(RepoListRetrivalStartedAction())
             return true
@@ -126,12 +126,16 @@ fun executeGitHubLogin(action: LoginAction, dispatch: DispatchFunction) {
             action.userName,
             action.password )
 
-    if(BuildConfig.ENABLE_MOCKS) { authTask.githubService = MockGitHubApiService() }
+    whenDebug { authTask.githubService = MockGitHubApiService() }
 
     authTask.execute()
     dispatch(LoginStartedAction(action.userName))
 }
 
-
+fun whenDebug(body:(() -> Unit)){
+    if(BuildConfig.ENABLE_MOCKS){
+        body()
+    }
+}
 
 

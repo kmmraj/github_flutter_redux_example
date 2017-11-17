@@ -6,7 +6,10 @@ import org.rekotlinexample.github.actions.LoginResultAction
 import org.rekotlinexample.github.middleware.LoginTaskListenerInterface
 import org.rekotlinexample.github.apirequests.GitHubApi
 import org.rekotlinexample.github.apirequests.GitHubApiService
+import org.rekotlinexample.github.mainStore
 import org.rekotlinexample.github.states.LoggedInState
+import tw.geothings.rekotlin.StateType
+import tw.geothings.rekotlin.Store
 
 /**
  * Created by Mohanraj Karatadipalayam on 08/11/17.
@@ -38,7 +41,7 @@ class UserLoginTask (val loginTaskListener: LoginTaskListenerInterface,
             } else {
                 loginCompletedAction = LoginCompletedAction(loginResultAction = mLoginResultAction)
             }
-            loginTaskListener.onFinished(loginCompletedAction)
+            loginTaskListener.onFinished(loginCompletedAction, mainStore as Store<StateType>)
         }
     }
 

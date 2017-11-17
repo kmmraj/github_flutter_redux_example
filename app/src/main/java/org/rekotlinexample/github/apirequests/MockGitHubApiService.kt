@@ -24,11 +24,7 @@ class MockGitHubApiService : GitHubApi {
                 stargazersCount = 6,
                 language = "kotlin",
                 description = "Kotlin Code")
-
-
-        var repoList = arrayListOf<RepoViewModel>(repo1,repo2)
-        return repoList
-
+        return arrayListOf<RepoViewModel>(repo1,repo2)
     }
 
     override fun createToken(username: String, password: String): LoginResultAction {
