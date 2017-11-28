@@ -21,7 +21,7 @@ ext {
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "org.rekotlin.rekotlinrouterexample"
         minSdkVersion 16
@@ -41,7 +41,7 @@ android {
         debug {
             //Enable the line below to prevent the app from crashing.
             //testCoverageEnabled true
-            buildConfigField 'boolean', 'ENABLE_MOCKS', 'false'
+            buildConfigField 'boolean', 'ENABLE_MOCKS', 'true'
         }
         release {
             minifyEnabled false
@@ -80,6 +80,11 @@ dependencies {
     implementation "tw.geothings.rekotlin:rekotlin:$rekotlin_version"
     implementation "org.rekotlinrouter:rekotlin-router:$rekotlin_router_version"
     implementation "org.kohsuke:github-api:$github_api_version"
+    implementation "io.reactivex.rxjava2:rxkotlin:2.1.0"
+    implementation "io.reactivex.rxjava2:rxandroid:2.0.1"
+
+//   implementation "io.reactivex.rxjava2:rxjava:2.1.6"
+
 
 
 

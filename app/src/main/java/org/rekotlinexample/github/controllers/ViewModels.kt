@@ -24,7 +24,7 @@ data class RepoViewModel ( var repoName: String? = null,
                       var watchers: Int = 0,
                       var stargazersCount: Int = 0,
                       var language: String = "",
-                     // var pushedAt: Date,
+                      var pushedAt: String = "",
                       var forks: Int = 0,
                       var description: String = "",
                       var htmlUrl: String = "") : Parcelable {

@@ -61,6 +61,7 @@ class WelcomeActivity : AppCompatActivity(), StoreSubscriber<GitHubAppState> {
             false
         })
 
+
         mBtnViewRepo.setOnTouchListener(View.OnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
                 startRepoListActivity()
