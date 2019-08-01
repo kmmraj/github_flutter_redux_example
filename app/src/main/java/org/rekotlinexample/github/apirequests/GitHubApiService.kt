@@ -9,11 +9,9 @@ import org.json.JSONObject
 import org.kohsuke.github.*
 import org.kohsuke.github.GHAuthorization.*
 import org.rekotlinexample.github.actions.LoginDataModel
-import org.rekotlinexample.github.actions.LoginResultAction
 import org.rekotlinexample.github.controllers.RepoViewModel
 import org.rekotlinexample.github.states.LoggedInState
 import java.io.IOException
-import java.lang.Exception
 
 
 val GITHUB_URL = "https://api.github.com"

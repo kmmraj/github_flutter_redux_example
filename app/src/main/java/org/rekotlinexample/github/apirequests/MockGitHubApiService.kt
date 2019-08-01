@@ -1,7 +1,6 @@
 package org.rekotlinexample.github.apirequests
 
 import org.rekotlinexample.github.actions.LoginDataModel
-import org.rekotlinexample.github.actions.LoginResultAction
 import org.rekotlinexample.github.controllers.RepoViewModel
 import org.rekotlinexample.github.states.LoggedInState
 import java.util.*

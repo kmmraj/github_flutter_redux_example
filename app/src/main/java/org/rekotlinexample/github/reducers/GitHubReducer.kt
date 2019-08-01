@@ -6,7 +6,7 @@ import org.rekotlinexample.github.states.GitHubAppState
 import org.rekotlinexample.github.states.LoggedInState
 import org.rekotlinexample.github.states.RepoListState
 import org.rekotlinrouter.NavigationReducer
-import tw.geothings.rekotlin.Action
+import org.rekotlin.Action
 
 
 fun appReducer(action: Action, oldState: GitHubAppState?) : GitHubAppState {
@@ -19,6 +19,7 @@ fun appReducer(action: Action, oldState: GitHubAppState?) : GitHubAppState {
             repoListState = RepoListState())
 
     return state.copy(
+            // TODO: Check this
             navigationState = NavigationReducer.reduce(action = action, oldState = state.navigationState),
             authenticationState = (::authenticationReducer)(action, state.authenticationState),
             repoListState = (::repoListReducer)(action, state.repoListState))

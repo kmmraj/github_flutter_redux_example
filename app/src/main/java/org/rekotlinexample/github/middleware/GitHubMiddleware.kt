@@ -12,7 +12,7 @@ import org.rekotlinexample.github.apirequests.PreferenceApiService.GITHUB_PREFS_
 import org.rekotlinexample.github.apirequests.PreferenceApiService.GITHUB_PREFS_KEY_USERNAME
 import org.rekotlinexample.github.states.GitHubAppState
 import org.rekotlinexample.github.states.LoggedInState
-import tw.geothings.rekotlin.*
+import org.rekotlin.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers

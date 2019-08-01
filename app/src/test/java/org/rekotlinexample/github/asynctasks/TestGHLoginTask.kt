@@ -1,6 +1,6 @@
 package org.rekotlinexample.github.asynctasks
 
-import io.reactivex.Single
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.rekotlinexample.github.actions.LoginDataModel
@@ -10,11 +10,8 @@ import org.rekotlinexample.github.controllers.RepoViewModel
 import org.rekotlinexample.github.states.LoggedInState
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
-import java.util.*
-import io.reactivex.subscribers.TestSubscriber
-import org.assertj.core.api.Assertions.assertThat
-import org.rekotlinexample.github.middleware.GHLoginObservableType
 import java.text.SimpleDateFormat
+import java.util.*
 
 
 /**

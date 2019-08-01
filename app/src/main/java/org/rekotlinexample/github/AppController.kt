@@ -16,7 +16,7 @@ import org.rekotlinexample.github.states.LoggedInState
 import org.rekotlinexample.github.states.RepoListState
 import org.rekotlinrouter.NavigationState
 import org.rekotlinrouter.Router
-import tw.geothings.rekotlin.Store
+import org.rekotlin.Store
 
 /**
  * Created by Mohanraj Karatadipalayam on 15/10/17.

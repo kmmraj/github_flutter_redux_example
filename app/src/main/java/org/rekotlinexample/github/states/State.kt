@@ -1,10 +1,9 @@
 package org.rekotlinexample.github.states
 
+import org.rekotlin.StateType
 import org.rekotlinexample.github.controllers.RepoViewModel
 import org.rekotlinrouter.HasNavigationState
 import org.rekotlinrouter.NavigationState
-import tw.geothings.rekotlin.StateType
-import java.util.*
 
 /**
  * Created by Mohanraj Karatadipalayam on 12/10/17.

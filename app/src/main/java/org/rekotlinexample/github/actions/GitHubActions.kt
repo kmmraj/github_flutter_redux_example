@@ -1,11 +1,8 @@
 package org.rekotlinexample.github.actions
 
-import org.kohsuke.github.GHRepository
+import org.rekotlin.Action
 import org.rekotlinexample.github.controllers.RepoViewModel
-import org.rekotlinexample.github.states.GitHubAppState
 import org.rekotlinexample.github.states.LoggedInState
-import tw.geothings.rekotlin.Action
-import tw.geothings.rekotlin.Store
 import java.util.*
 
 /**

@@ -1,24 +1,18 @@
 package org.rekotlinexample.github.asynctasks
 
 import org.assertj.core.api.Assertions
-import org.awaitility.Awaitility
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.rekotlinexample.github.actions.LoginCompletedAction
+import org.rekotlin.StateType
+import org.rekotlin.Store
 import org.rekotlinexample.github.actions.LoginDataModel
-import org.rekotlinexample.github.actions.LoginResultAction
 import org.rekotlinexample.github.actions.RepoListCompletedAction
 import org.rekotlinexample.github.apirequests.GitHubApi
 import org.rekotlinexample.github.asyntasks.RepoListTask
 import org.rekotlinexample.github.controllers.RepoViewModel
-import org.rekotlinexample.github.mainStore
 import org.rekotlinexample.github.middleware.RepoListTaskListenerInterface
-import org.rekotlinexample.github.states.LoggedInState
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
-import tw.geothings.rekotlin.StateType
-import tw.geothings.rekotlin.Store
-import java.util.concurrent.TimeUnit
 
 /**
  * Created by Mohanraj Karatadipalayam on 17/11/17.

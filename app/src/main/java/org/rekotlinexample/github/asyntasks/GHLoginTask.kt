@@ -1,15 +1,13 @@
 package org.rekotlinexample.github.asyntasks
 
 import io.reactivex.Single
+import org.rekotlin.StateType
+import org.rekotlin.Store
 import org.rekotlinexample.github.actions.LoginResultAction
 import org.rekotlinexample.github.apirequests.GitHubApi
 import org.rekotlinexample.github.apirequests.GitHubApiService
 import org.rekotlinexample.github.mainStore
 import org.rekotlinexample.github.middleware.GHLoginObservableType
-import org.rekotlinexample.github.states.LoggedInState
-import tw.geothings.rekotlin.StateType
-import tw.geothings.rekotlin.Store
-import java.text.DateFormat
 import java.text.SimpleDateFormat
 
 

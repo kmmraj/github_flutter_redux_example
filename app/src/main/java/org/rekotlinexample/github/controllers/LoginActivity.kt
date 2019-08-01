@@ -16,7 +16,7 @@ import org.rekotlinexample.github.routes.repoListRoute
 import org.rekotlinexample.github.states.AuthenticationState
 import org.rekotlinexample.github.states.LoggedInState
 import org.rekotlinrouter.SetRouteAction
-import tw.geothings.rekotlin.StoreSubscriber
+import org.rekotlin.StoreSubscriber
 
 
 interface NextActivityHandler{
@@ -34,14 +34,14 @@ class LoginActivity : Activity(), StoreSubscriber<AuthenticationState>, NextActi
        this.findViewById(R.id.password) as EditText
     }
     private val mViewProgress: View by lazy {
-        this.findViewById(R.id.login_progress)
+        this.findViewById<View>(R.id.login_progress)
     }
 
 //    private val mViewProgressContainer: View by lazy {
 //        this.findViewById(R.id.progressBarContainer)
 //    }
     private val mViewForm: View by lazy {
-        this.findViewById(R.id.login_progress)
+        this.findViewById<View>(R.id.login_progress)
     }
 
     private val mEmailSignInButton: Button by lazy {
