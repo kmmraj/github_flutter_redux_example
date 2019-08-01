@@ -7,8 +7,8 @@ import org.rekotlinexample.github.middleware.RepoListTaskListenerInterface
 import org.rekotlinexample.github.apirequests.GitHubApi
 import org.rekotlinexample.github.apirequests.GitHubApiService
 import org.rekotlinexample.github.mainStore
-import tw.geothings.rekotlin.StateType
-import tw.geothings.rekotlin.Store
+import org.rekotlin.StateType
+import org.rekotlin.Store
 
 /**
  * Created by Mohanraj Karatadipalayam on 25/10/17.

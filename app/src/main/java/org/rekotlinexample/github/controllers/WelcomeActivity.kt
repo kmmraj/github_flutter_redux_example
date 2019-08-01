@@ -2,7 +2,7 @@ package org.rekotlinexample.github.controllers
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.view.MotionEvent
 import android.view.View
 import android.widget.Button
@@ -14,7 +14,7 @@ import org.rekotlinexample.github.routes.repoListRoute
 import org.rekotlinexample.github.routes.welcomeRoute
 import org.rekotlinexample.github.states.GitHubAppState
 import org.rekotlinrouter.SetRouteAction
-import tw.geothings.rekotlin.StoreSubscriber
+import org.rekotlin.StoreSubscriber
 
 
 class WelcomeActivity : AppCompatActivity(), StoreSubscriber<GitHubAppState> {
@@ -60,6 +60,7 @@ class WelcomeActivity : AppCompatActivity(), StoreSubscriber<GitHubAppState> {
             }
             false
         })
+
 
         mBtnViewRepo.setOnTouchListener(View.OnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {

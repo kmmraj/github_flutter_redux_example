@@ -12,8 +12,8 @@ import org.rekotlinexample.github.middleware.LoginTaskListenerInterface
 import org.rekotlinexample.github.states.LoggedInState
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
-import tw.geothings.rekotlin.StateType
-import tw.geothings.rekotlin.Store
+import org.rekotlin.StateType
+import org.rekotlin.Store
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -34,8 +34,8 @@ class TestUserLoginTask{
                 TODO()
             }
 
-            override fun createToken(username: String, password: String): LoginResultAction {
-                return LoginResultAction(userName = username,
+            override fun createToken(username: String, password: String): LoginDataModel {
+                return LoginDataModel(userName = username,
                         token = "181818181818181818181818181818",
                         loginStatus = LoggedInState.loggedIn,
                         fullName = "Mohanraj Karats",
@@ -79,8 +79,8 @@ class TestUserLoginTask{
                 TODO()
             }
 
-            override fun createToken(username: String, password: String): LoginResultAction {
-                return LoginResultAction(userName = username,
+            override fun createToken(username: String, password: String): LoginDataModel {
+                return LoginDataModel(userName = username,
                         loginStatus = LoggedInState.notLoggedIn,
                         message = "Error Message"
                 )

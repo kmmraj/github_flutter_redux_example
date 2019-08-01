@@ -2,7 +2,7 @@ package org.rekotlinexample.github.controllers
 
 import android.content.Context
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,16 +20,16 @@ import org.rekotlinexample.github.states.RepoListState
 import org.rekotlinrouter.Route
 import org.rekotlinrouter.SetRouteAction
 import org.rekotlinrouter.SetRouteSpecificData
-import tw.geothings.rekotlin.StoreSubscriber
+import org.rekotlin.StoreSubscriber
 
 
 class RepoListActivity : AppCompatActivity(), AdapterView.OnItemClickListener, StoreSubscriber<RepoListState> {
 
     private val mViewProgress: View by lazy {
-        this.findViewById(R.id.pb_progress)
+        this.findViewById<View>(R.id.pb_progress)
     }
     private val mViewForm: View by lazy {
-        this.findViewById(R.id.repo_cell)
+        this.findViewById<View>(R.id.repo_cell)
     }
 
     var mListOfRepos: List<RepoViewModel>? = null

@@ -16,10 +16,10 @@ import org.rekotlinexample.github.mainStore
 import org.rekotlinexample.github.states.LoggedInState
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
-import tw.geothings.rekotlin.Action
-import tw.geothings.rekotlin.DispatchFunction
-import tw.geothings.rekotlin.StateType
-import tw.geothings.rekotlin.Store
+import org.rekotlin.Action
+import org.rekotlin.DispatchFunction
+import org.rekotlin.StateType
+import org.rekotlin.Store
 import java.util.concurrent.TimeUnit
 
 

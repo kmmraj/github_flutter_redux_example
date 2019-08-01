@@ -24,7 +24,7 @@ data class RepoViewModel ( var repoName: String? = null,
                       var watchers: Int = 0,
                       var stargazersCount: Int = 0,
                       var language: String = "",
-                     // var pushedAt: Date,
+                      var pushedAt: String = "",
                       var forks: Int = 0,
                       var description: String = "",
                       var htmlUrl: String = "") : Parcelable {
@@ -33,10 +33,10 @@ data class RepoViewModel ( var repoName: String? = null,
     constructor(parcelIn: Parcel) : this(repoName = parcelIn.readString(),
             watchers = parcelIn.readInt(),
             stargazersCount = parcelIn.readInt(),
-            language = parcelIn.readString(),
+            language = parcelIn.readString().toString(),
             forks = parcelIn.readInt(),
-            description = parcelIn.readString(),
-            htmlUrl =  parcelIn.readString()
+            description = parcelIn.readString().toString(),
+            htmlUrl =  parcelIn.readString().toString()
             )
 
     override fun describeContents(): Int = 0

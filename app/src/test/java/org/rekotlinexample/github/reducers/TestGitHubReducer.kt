@@ -2,13 +2,12 @@ package org.rekotlinexample.github.reducers
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
+import org.rekotlin.Action
 import org.rekotlinexample.github.actions.*
 import org.rekotlinexample.github.controllers.RepoViewModel
 import org.rekotlinexample.github.states.AuthenticationState
-import org.rekotlinexample.github.states.GitHubAppState
 import org.rekotlinexample.github.states.LoggedInState
 import org.rekotlinexample.github.states.RepoListState
-import tw.geothings.rekotlin.Action
 
 class TestGitHubReducer{
 
