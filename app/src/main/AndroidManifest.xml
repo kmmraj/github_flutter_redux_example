@@ -24,6 +24,18 @@
         <activity android:name=".controllers.RepoListActivity" />
         <activity android:name=".controllers.WebViewActivity" />
         <activity android:name=".controllers.WelcomeActivity"></activity>
+        <activity android:name="org.rekotlin.rekotlinrouterexample.MyFlutterActivity"></activity>
+
+        <activity
+            android:name="io.flutter.embedding.android.FlutterActivity"
+            android:theme="@style/AppTheme"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density"
+            android:hardwareAccelerated="true"
+            android:windowSoftInputMode="adjustResize"
+            android:exported="true"
+            />
+
+
     </application>
 
 </manifest>

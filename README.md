@@ -1,4 +1,4 @@
-## ReKotlin Counter Example
+## ReKotlin GitHub Example
 
 A github example, build with [ReKotlin](https://github.com/ReKotlin/ReKotlin) and [ReKotlin-Router](https://github.com/kmmraj/rekotlin-router)
 

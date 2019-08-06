@@ -1,12 +1,37 @@
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withReader('UTF-8') { reader ->
+        localProperties.load(reader)
+    }
+}
+
+def flutterRoot = localProperties.getProperty('flutter.sdk')
+if (flutterRoot == null) {
+    throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
+}
+
+def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
+if (flutterVersionCode == null) {
+    flutterVersionCode = '1'
+}
+
+def flutterVersionName = localProperties.getProperty('flutter.versionName')
+if (flutterVersionName == null) {
+    flutterVersionName = '1.0'
+}
+
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
+apply plugin: 'kotlin-android-extensions'
 
 
 ext {
     rekotlin_version = "1.0.4"
     rekotlin_router_version = "0.2.0"
     junit_version = "4.12"
-    assertj_core_version="3.6.2"
+    assertj_core_version = "3.6.2"
     android_support_lib_version = "25.3.1"
     constraint_layout_version = "1.0.2"
     github_api_version = "1.89"
@@ -17,6 +42,7 @@ ext {
     powermock_api_mockito2_version = "1.7.0RC2"
     robolectric_version = "3.5.1"
     awaitility_version = "3.0.0"
+    lifecycle_version = "2.0.0"
 }
 
 android {
@@ -42,10 +68,15 @@ android {
             //Enable the line below to prevent the app from crashing.
             //testCoverageEnabled true
             buildConfigField 'boolean', 'ENABLE_MOCKS', 'true'
+            minifyEnabled false
+            useProguard false
+            multiDexEnabled true
         }
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            useProguard false
+            multiDexEnabled true
+            //proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debugTest {
             buildConfigField 'boolean', 'ENABLE_MOCKS', 'true'
@@ -65,6 +96,10 @@ android {
     }
 }
 
+flutter {
+    source '../../flutter_gh_detail'
+}
+
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0', {
@@ -76,17 +111,14 @@ dependencies {
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
 
-    //implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-   // implementation "tw.geothings.rekotlin:rekotlin:$rekotlin_version"
     implementation "org.rekotlin:rekotlin:$rekotlin_version"
     implementation "org.rekotlinrouter:rekotlin-router:$rekotlin_router_version"
     implementation "org.kohsuke:github-api:$github_api_version"
     implementation "io.reactivex.rxjava2:rxkotlin:2.1.0"
     implementation "io.reactivex.rxjava2:rxandroid:2.0.1"
 
-//   implementation "io.reactivex.rxjava2:rxjava:2.1.6"
-
+    implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
 
 
 
@@ -100,10 +132,13 @@ dependencies {
     testImplementation "org.awaitility:awaitility:$awaitility_version"
 
 
-
     debugCompile "com.squareup.leakcanary:leakcanary-android:$leakcanary_android_version"
     implementation "com.squareup.leakcanary:leakcanary-android:$leakcanary_android_version"
     releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:$leakcanary_android_version"
+
+    releaseCompile('org.rekotlinexample.github.flutter_gh_detail:flutter_release:1.0@aar') {
+        transitive = true
+    }
 
 
 }
@@ -114,4 +149,8 @@ repositories {
     maven {
         url 'https://rekotlin.s3-ap-southeast-1.amazonaws.com/snapshots'
     }
+    maven {
+        url '/Users/mkaratadipalayam/mohan/technotes/flutter/withExtApps/flutter_gh_detail/build/host/outputs/repo'
+    }
+
 }

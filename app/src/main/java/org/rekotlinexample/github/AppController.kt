@@ -4,6 +4,9 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import com.squareup.leakcanary.LeakCanary
+import io.flutter.embedding.engine.FlutterEngine
+import io.flutter.embedding.engine.dart.DartExecutor
+import io.flutter.view.FlutterMain
 import org.rekotlinexample.github.actions.LoggedInDataSaveAction
 import org.rekotlinexample.github.middleware.gitHubMiddleware
 import org.rekotlinexample.github.reducers.appReducer
@@ -37,7 +40,7 @@ class AppController : Application() {
         PreferenceApiService.getSharedPreferenceByName(context = applicationContext,
                 sharedPreferenceKey = PreferenceApiService.GITHUB_PREFS_NAME)
     }
-
+    lateinit var engine: FlutterEngine
 
 
     override fun onCreate() {
@@ -71,6 +74,15 @@ class AppController : Application() {
                         stateType.navigationState
                     }
                 })
+
+        FlutterMain.startInitialization(applicationContext)
+        FlutterMain.ensureInitializationComplete(applicationContext, arrayOf<String>())
+        engine = FlutterEngine(this)
+//        val entryPoint = DartExecutor.DartEntrypoint(this.assets.toString(),
+//                FlutterMain.findAppBundlePath(this), "main")
+        val entryPoint =  DartExecutor.DartEntrypoint(
+        FlutterMain.findAppBundlePath(), "main")
+        engine.dartExecutor.executeDartEntrypoint(entryPoint)
 
     }
 

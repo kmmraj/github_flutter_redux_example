@@ -1,8 +1,11 @@
 package org.rekotlinexample.github.controllers
 
+//import io.flutter.embedding.android.FlutterFragment
+
+
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +13,11 @@ import android.widget.AdapterView
 import android.widget.BaseAdapter
 import android.widget.ListView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import io.flutter.embedding.android.FlutterActivity
+import org.rekotlin.StoreSubscriber
+import org.rekotlin.rekotlinrouterexample.MyFlutterActivity
+import org.rekotlin.rekotlinrouterexample.MyFlutterFragment
 import org.rekotlinexample.github.R
 import org.rekotlinexample.github.actions.RepoDetailListAction
 import org.rekotlinexample.github.mainStore
@@ -20,10 +28,18 @@ import org.rekotlinexample.github.states.RepoListState
 import org.rekotlinrouter.Route
 import org.rekotlinrouter.SetRouteAction
 import org.rekotlinrouter.SetRouteSpecificData
-import org.rekotlin.StoreSubscriber
 
 
-class RepoListActivity : AppCompatActivity(), AdapterView.OnItemClickListener, StoreSubscriber<RepoListState> {
+//import io.flutter.
+
+
+
+
+class RepoListActivity : AppCompatActivity(),
+        AdapterView.OnItemClickListener,
+        StoreSubscriber<RepoListState> //,
+       // FlutterEngineProvider
+{
 
     private val mViewProgress: View by lazy {
         this.findViewById<View>(R.id.pb_progress)
@@ -36,7 +52,10 @@ class RepoListActivity : AppCompatActivity(), AdapterView.OnItemClickListener, S
     private var mRepoListViewAdapter: RepoListAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+//        super.onCreate(savedInstanceState)
+    //    FlutterMain.startInitialization(this);
+        super.onCreate(savedInstanceState);
+//        GeneratedPluginRegistrant.registerWith(this);
         setContentView(R.layout.activity_repo_list)
         createRepoListView()
         mainStore.subscribe(this){
@@ -63,7 +82,7 @@ class RepoListActivity : AppCompatActivity(), AdapterView.OnItemClickListener, S
 
 
     fun createRepoListView() {
-       val listView: ListView =  findViewById(R.id.repo_cell) as ListView
+       val listView: ListView =  findViewById(org.rekotlinexample.github.R.id.repo_cell) as ListView
         mRepoListViewAdapter = RepoListAdapter()
         listView.adapter = mRepoListViewAdapter
         listView.isClickable = true
@@ -72,7 +91,61 @@ class RepoListActivity : AppCompatActivity(), AdapterView.OnItemClickListener, S
 
 
     override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        startRepoDetailActivity(position)
+        //startRepoDetailActivity(position)
+       // startFlutterRepoActivity(position)
+        startFlutterFragment()
+    }
+
+    fun startFlutterRepoActivity(position: Int){
+//        val flutterView = FlutterView(this,)
+//
+//                Flutter.createView(
+//                this@RepoListActivity,
+//                lifecycle,
+//                "route1"
+//        )
+//        val layout = FrameLayout.LayoutParams(600, 800)
+//        layout.leftMargin = 100
+//        layout.topMargin = 200
+//        addContentView(flutterView, layout)
+
+        val defaultFlutter = FlutterActivity.createDefaultIntent(this@RepoListActivity)
+        startActivity(defaultFlutter)
+    }
+
+    fun startFlutterFragment() {
+
+        val myFlutterFragment = MyFlutterFragment()
+//        supportFragmentManager.beginTransaction().replace(R.id.container, myFlutterFragment)
+//                .commit()
+        val myFlutterIntent = Intent(this, MyFlutterActivity::class.java)
+        myFlutterIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        this.startActivity(myFlutterIntent)
+
+
+    }
+
+    private fun createFlutterFragment() {
+
+        val flutterFragment = MyFlutterFragment()
+        val fragmentManager = fragmentManager
+
+//        flutterFragment = fi<FlutterFragment>(R.id.flutterfragment) as FlutterFragment
+//
+//        if (flutterFragment == null) {
+//            // No FlutterFragment exists yet. This must be the initial Activity creation. We will create
+//            // and add a new FlutterFragment to this Activity.
+//            //
+//            // This example uses defaults of "main" for the Dart entrypoint, and "/" as the initial route.
+//            flutterFragment = FlutterFragment.Builder().build<FlutterFragment>()
+//
+//            // This method assumes that there is a FrameLayout in the view hierarchy with an ID of CONTAINER_ID.
+//            // TAG_FLUTTER_FRAGMENT is a String of your choice to reference the added FlutterFragment.
+//            fragmentManager
+//                    .beginTransaction()
+//                    .add(CONTAINER_ID, flutterFragment, TAG_FLUTTER_FRAGMENT)
+//                    .commit()
+//        }
     }
 
     fun startRepoDetailActivity(position: Int){
@@ -118,6 +191,7 @@ class RepoListActivity : AppCompatActivity(), AdapterView.OnItemClickListener, S
         }
 
     }
+
 
 
 
