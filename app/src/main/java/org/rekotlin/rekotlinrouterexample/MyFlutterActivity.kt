@@ -1,17 +1,9 @@
 package org.rekotlin.rekotlinrouterexample
 
-import android.content.Context
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentActivity
-import io.flutter.embedding.android.FlutterEngineProvider
-import io.flutter.embedding.engine.FlutterEngine
-import io.flutter.view.FlutterMain
-import org.rekotlinexample.github.R
 import android.content.Intent
-
-
-
+import android.os.Bundle
+import androidx.fragment.app.FragmentActivity
+import org.rekotlinexample.github.R
 
 
 class MyFlutterActivity: FragmentActivity()
@@ -49,9 +41,18 @@ class MyFlutterActivity: FragmentActivity()
 
 //        val args = getArgsFromIntent(intent)
 //        FlutterMain.ensureInitializationComplete(getApplicationContext(), args);
-        myFlutterFragment = MyFlutterFragment()
+        val someData = """
+                    {
+          "myData": {
+            "one": 1
+          }
+        }
+        """.trimIndent()
+
+        myFlutterFragment = MyFlutterFragment(someData)
         supportFragmentManager.beginTransaction().replace(R.id.container, myFlutterFragment)
                 .commit()
+
     }
 
 //    override fun provideFlutterEngine(context: Context): FlutterEngine? {

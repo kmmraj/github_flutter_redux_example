@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import org.rekotlinexample.github.R
 
 
-class MyFlutterFragment : Fragment() {
+class MyFlutterFragment(val someData: String) : Fragment() {
 
 
     override fun onCreateView(

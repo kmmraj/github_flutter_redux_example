@@ -30,6 +30,9 @@ import org.rekotlinrouter.SetRouteAction
 import org.rekotlinrouter.SetRouteSpecificData
 
 
+
+
+
 //import io.flutter.
 
 
@@ -115,7 +118,7 @@ class RepoListActivity : AppCompatActivity(),
 
     fun startFlutterFragment() {
 
-        val myFlutterFragment = MyFlutterFragment()
+        //val myFlutterFragment = MyFlutterFragment()
 //        supportFragmentManager.beginTransaction().replace(R.id.container, myFlutterFragment)
 //                .commit()
         val myFlutterIntent = Intent(this, MyFlutterActivity::class.java)
@@ -125,10 +128,21 @@ class RepoListActivity : AppCompatActivity(),
 
     }
 
+    fun startFlutterFragmentWayOne(){
+//        val myFlutterFragment = MyFlutterFragment()
+//        val tx = supportFragmentManager.beginTransaction()
+//        tx.replace(R.id.container, myFlutterFragment)
+//        tx.commit()
+    }
+
     private fun createFlutterFragment() {
 
-        val flutterFragment = MyFlutterFragment()
-        val fragmentManager = fragmentManager
+
+
+        //Flutter
+
+//        val flutterFragment = MyFlutterFragment()
+//        val fragmentManager = fragmentManager
 
 //        flutterFragment = fi<FlutterFragment>(R.id.flutterfragment) as FlutterFragment
 //
