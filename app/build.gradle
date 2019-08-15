@@ -150,7 +150,7 @@ repositories {
         url 'https://rekotlin.s3-ap-southeast-1.amazonaws.com/snapshots'
     }
     maven {
-        url '/Users/mkaratadipalayam/mohan/technotes/flutter/withExtApps/flutter_gh_detail/build/host/outputs/repo'
+        url '/Users/mkaratadipalayam/mohan/technotes/flutter/withExtApps/try1/flutter_gh_detail/build/host/outputs/repo'
     }
 
 }
