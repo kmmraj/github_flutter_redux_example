@@ -4,15 +4,20 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
 import io.flutter.app.FlutterActivity
+import io.flutter.app.FlutterFragmentActivity
+//import io.flutter.embedding.android.FlutterActivity
+//import io.flutter.app.FlutterActivity
 
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.view.FlutterView
 import org.rekotlinexample.github.R
 
 
+
 class MyFlutterActivity:
+        FlutterFragmentActivity()
 // FlutterActivity()
-        FragmentActivity()
+//        FragmentActivity()
 //        , FlutterEngineProvider
 {
 
@@ -26,7 +31,7 @@ class MyFlutterActivity:
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_my_flutter)
+       // setContentView(R.layout.activity_my_flutter)
 
         val someData = """
             
@@ -44,14 +49,16 @@ class MyFlutterActivity:
 
         """.trimIndent()
 
-        val flutterView = FlutterView(this)
+       // val flutterView = FlutterView(this)
 
         val channel = MethodChannel(flutterView, CHANNEL)
         channel.invokeMethod("message", someData)
 
         myFlutterFragment = MyFlutterFragment(someData)
-        supportFragmentManager.beginTransaction().replace(R.id.container, myFlutterFragment)
-                .commit()
+
+
+//        supportFragmentManager.beginTransaction().replace(R.id.container, myFlutterFragment)
+//                .commit()
 
     }
 
