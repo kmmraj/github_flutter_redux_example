@@ -1,31 +1,20 @@
 package org.rekotlin.rekotlinrouterexample
 
-import android.content.Intent
+
 import android.os.Bundle
-import androidx.fragment.app.FragmentActivity
-import io.flutter.app.FlutterActivity
+import android.os.Handler
 import io.flutter.app.FlutterFragmentActivity
-//import io.flutter.embedding.android.FlutterActivity
-//import io.flutter.app.FlutterActivity
-
 import io.flutter.plugin.common.MethodChannel
-import io.flutter.view.FlutterView
-import org.rekotlinexample.github.R
-
 
 
 class MyFlutterActivity:
         FlutterFragmentActivity()
-// FlutterActivity()
-//        FragmentActivity()
-//        , FlutterEngineProvider
 {
-
 
     private lateinit var myFlutterFragment: MyFlutterFragment
 
     companion object {
-        const val CHANNEL = "org.rekotlin.rekotlinrouterexample.basicchannelcommunication"
+        const val CHANNEL = "repoInfo/details"
     }
 
 
@@ -34,31 +23,25 @@ class MyFlutterActivity:
        // setContentView(R.layout.activity_my_flutter)
 
         val someData = """
-            
-            {
-              "myData": {
-                "staggers": 6,
-                "forks": 6,
-                "languages": [
-                  "kotlin",
-                  "java"
-                ],
-                
-              }
-            }
-
+  {
+  "repoDetail": {
+    "stargazers": 222,
+    "forks": 33,
+    "languages": [
+      "kotlin",
+      "java"
+    ]    
+  }
+}
         """.trimIndent()
 
-       // val flutterView = FlutterView(this)
-
         val channel = MethodChannel(flutterView, CHANNEL)
-        channel.invokeMethod("message", someData)
+
+        Handler().postDelayed({
+            channel.invokeMethod("message", someData)
+        },500)
 
         myFlutterFragment = MyFlutterFragment(someData)
-
-
-//        supportFragmentManager.beginTransaction().replace(R.id.container, myFlutterFragment)
-//                .commit()
 
     }
 

@@ -141,6 +141,10 @@ dependencies {
         transitive = true
     }
 
+//    debugCompile('org.rekotlinexample.github.flutter_gh_detail:flutter_debug:1.0@aar') {
+//        transitive = true
+//    }
+
 
 }
 repositories {
