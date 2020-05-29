@@ -1,6 +1,7 @@
 package org.rekotlin.rekotlinrouterexample
 
 
+import android.app.PendingIntent.getActivity
 import android.os.Bundle
 import android.os.Handler
 import io.flutter.app.FlutterFragmentActivity
@@ -36,6 +37,23 @@ class MyFlutterActivity:
         """.trimIndent()
 
         val channel = MethodChannel(flutterView, CHANNEL)
+
+        channel.setMethodCallHandler { methodCall, result ->
+//            val args = methodCall.arguments
+//
+//            print("args are $args")
+//            print("methodCall.method is $methodCall.method")
+
+            when (methodCall.method){
+                "handleMessageBack" -> {
+                    this.onBackPressed()
+                }
+                else -> {
+
+                }
+            }
+
+        }
 
         Handler().postDelayed({
             channel.invokeMethod("message", someData)

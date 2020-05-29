@@ -78,10 +78,12 @@ class AppController : Application() {
         FlutterMain.startInitialization(applicationContext)
         FlutterMain.ensureInitializationComplete(applicationContext, arrayOf<String>())
         engine = FlutterEngine(this)
-        val entryPoint = DartExecutor.DartEntrypoint(this.assets,
-                FlutterMain.findAppBundlePath(this).toString(), "main")
-//        val entryPoint =  DartExecutor.DartEntrypoint(
-//        FlutterMain.findAppBundlePath(), "main")
+//        val entryPoint = DartExecutor.DartEntrypoint(this.assets,
+//                FlutterMain.findAppBundlePath(this).toString(), "main")
+
+
+        val entryPoint =  DartExecutor.DartEntrypoint(
+        FlutterMain.findAppBundlePath(), "main")
         engine.dartExecutor.executeDartEntrypoint(entryPoint)
 
     }
