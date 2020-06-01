@@ -56,7 +56,7 @@ class MyFlutterActivity:
         }
 
         Handler().postDelayed({
-            channel.invokeMethod("message", someData)
+            channel.invokeMethod("dataToDetailFlutterComponent", someData)
         },500)
 
         myFlutterFragment = MyFlutterFragment(someData)

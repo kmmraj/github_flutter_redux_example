@@ -121,9 +121,16 @@ class RepoListActivity : AppCompatActivity(),
         //val myFlutterFragment = MyFlutterFragment()
 //        supportFragmentManager.beginTransaction().replace(R.id.container, myFlutterFragment)
 //                .commit()
+
         val myFlutterIntent = Intent(this, MyFlutterActivity::class.java)
         myFlutterIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         this.startActivity(myFlutterIntent)
+
+//        startActivity(
+//                FlutterActivity
+//                        .withCachedEngine("my_engine_id")
+//                        .build(this)
+//        )
 
 
     }

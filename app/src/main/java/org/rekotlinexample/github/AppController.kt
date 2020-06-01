@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.squareup.leakcanary.LeakCanary
 import io.flutter.embedding.engine.FlutterEngine
+import io.flutter.embedding.engine.FlutterEngineCache
 import io.flutter.embedding.engine.dart.DartExecutor
 import io.flutter.view.FlutterMain
 import org.rekotlinexample.github.actions.LoggedInDataSaveAction
@@ -75,16 +76,30 @@ class AppController : Application() {
                     }
                 })
 
-        FlutterMain.startInitialization(applicationContext)
-        FlutterMain.ensureInitializationComplete(applicationContext, arrayOf<String>())
+//        FlutterMain.startInitialization(applicationContext)
+//        FlutterMain.ensureInitializationComplete(applicationContext, arrayOf<String>())
+//        engine = FlutterEngine(this)
+////        val entryPoint = DartExecutor.DartEntrypoint(this.assets,
+////                FlutterMain.findAppBundlePath(this).toString(), "main")
+//
+//
+//        val entryPoint =  DartExecutor.DartEntrypoint(
+//                FlutterMain.findAppBundlePath(), "main")
+//        engine.dartExecutor.executeDartEntrypoint(entryPoint)
+
+
+        // Instantiate a FlutterEngine.
         engine = FlutterEngine(this)
-//        val entryPoint = DartExecutor.DartEntrypoint(this.assets,
-//                FlutterMain.findAppBundlePath(this).toString(), "main")
 
+        // Start executing Dart code to pre-warm the FlutterEngine.
+        engine.dartExecutor.executeDartEntrypoint(
+                DartExecutor.DartEntrypoint.createDefault()
+        )
 
-        val entryPoint =  DartExecutor.DartEntrypoint(
-        FlutterMain.findAppBundlePath(), "main")
-        engine.dartExecutor.executeDartEntrypoint(entryPoint)
+        // Cache the FlutterEngine to be used by FlutterActivity.
+        FlutterEngineCache
+                .getInstance()
+                .put("my_engine_id", engine)
 
     }
 
