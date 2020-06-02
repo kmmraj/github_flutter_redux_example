@@ -7,6 +7,7 @@ import com.squareup.leakcanary.LeakCanary
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.embedding.engine.FlutterEngineCache
 import io.flutter.embedding.engine.dart.DartExecutor
+import io.flutter.embedding.engine.systemchannels.KeyEventChannel
 import io.flutter.view.FlutterMain
 import org.rekotlinexample.github.actions.LoggedInDataSaveAction
 import org.rekotlinexample.github.middleware.gitHubMiddleware
@@ -32,6 +33,8 @@ var mainStore = Store(state = null,
 
 private var mInstance: AppController? = null
 var router: Router<GitHubAppState>? = null
+var channel: KeyEventChannel? = null;
+lateinit var engine: FlutterEngine
 
 class AppController : Application() {
 
@@ -41,7 +44,7 @@ class AppController : Application() {
         PreferenceApiService.getSharedPreferenceByName(context = applicationContext,
                 sharedPreferenceKey = PreferenceApiService.GITHUB_PREFS_NAME)
     }
-    lateinit var engine: FlutterEngine
+   // lateinit var engine: FlutterEngine
 
 
     override fun onCreate() {
@@ -95,6 +98,7 @@ class AppController : Application() {
         engine.dartExecutor.executeDartEntrypoint(
                 DartExecutor.DartEntrypoint.createDefault()
         )
+
 
         // Cache the FlutterEngine to be used by FlutterActivity.
         FlutterEngineCache

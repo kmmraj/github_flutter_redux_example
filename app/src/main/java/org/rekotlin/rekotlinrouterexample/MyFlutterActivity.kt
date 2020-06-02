@@ -1,21 +1,30 @@
 package org.rekotlin.rekotlinrouterexample
 
 
-import android.app.PendingIntent.getActivity
 import android.os.Bundle
 import android.os.Handler
-import io.flutter.app.FlutterFragmentActivity
+import io.flutter.embedding.android.FlutterActivity
 import io.flutter.plugin.common.MethodChannel
+// TODO - Check this one
+//class MyFlutterActivity : FlutterActivity(), FlutterFragment.FlutterEngineProvider {
+//
+//    override fun getFlutterEngine(context: Context): FlutterEngine? =
+//            (context.applicationContext as MyApplication).engine
+//
+//}
+import org.rekotlinexample.github.engine
 
 
 class MyFlutterActivity:
-        FlutterFragmentActivity()
+//        FlutterFragmentActivity()
+        FlutterActivity()
 {
 
     private lateinit var myFlutterFragment: MyFlutterFragment
 
     companion object {
-        const val CHANNEL = "repoInfo/details"
+        const val REPO_DETAILS_CHANNEL = "repoInfo/details"
+        const val REPO_LIST_CHANNEL = "repoInfo/list"
     }
 
 
@@ -36,13 +45,36 @@ class MyFlutterActivity:
 }
         """.trimIndent()
 
-        val channel = MethodChannel(flutterView, CHANNEL)
-
-        channel.setMethodCallHandler { methodCall, result ->
+//        val channel = MethodChannel(flutterView, CHANNEL)
+//
+//        channel.setMethodCallHandler { methodCall, result ->
 //            val args = methodCall.arguments
 //
 //            print("args are $args")
 //            print("methodCall.method is $methodCall.method")
+//
+//            when (methodCall.method){
+//                "handleMessageBack" -> {
+//                    this.onBackPressed()
+//                }
+//                else -> {
+//
+//                }
+//            }
+//
+//        }
+//
+//        Handler().postDelayed({
+//            channel.invokeMethod("dataToDetailFlutterComponent", someData)
+//        },500)
+
+        // TODO: check the backdata from flutter  - platform channel will not work
+        val repoListChannelMethod = MethodChannel(engine.dartExecutor, REPO_LIST_CHANNEL)
+        repoListChannelMethod.setMethodCallHandler { methodCall, result ->
+            val args = methodCall.arguments
+
+            print("args are $args")
+            print("methodCall.method is $methodCall.method")
 
             when (methodCall.method){
                 "handleMessageBack" -> {
@@ -52,13 +84,17 @@ class MyFlutterActivity:
 
                 }
             }
-
         }
 
-        Handler().postDelayed({
-            channel.invokeMethod("dataToDetailFlutterComponent", someData)
-        },500)
 
+
+//        Handler().postDelayed({
+//            engine.platformChannel.channel.invokeMethod("dataToDetailFlutterComponent", someData)
+//        },500)
+        val repoDetailsChannelMethod = MethodChannel(engine.dartExecutor, REPO_DETAILS_CHANNEL)
+        Handler().postDelayed({
+            repoDetailsChannelMethod.invokeMethod("dataToDetailFlutterComponent", someData)
+        },5000)
         myFlutterFragment = MyFlutterFragment(someData)
 
     }
