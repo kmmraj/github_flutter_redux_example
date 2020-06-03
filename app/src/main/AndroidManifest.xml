@@ -24,7 +24,6 @@
         <activity android:name=".controllers.RepoListActivity" />
         <activity android:name=".controllers.WebViewActivity" />
         <activity android:name=".controllers.WelcomeActivity"></activity>
-        <activity android:name="org.rekotlin.rekotlinrouterexample.MyFlutterActivity"></activity>
 
         <activity
             android:name="io.flutter.embedding.android.FlutterActivity"

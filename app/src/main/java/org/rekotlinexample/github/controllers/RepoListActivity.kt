@@ -4,7 +4,6 @@ package org.rekotlinexample.github.controllers
 
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,8 +16,6 @@ import androidx.appcompat.app.AppCompatActivity
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.plugin.common.MethodChannel
 import org.rekotlin.StoreSubscriber
-import org.rekotlin.rekotlinrouterexample.MyFlutterActivity
-import org.rekotlin.rekotlinrouterexample.MyFlutterFragment
 import org.rekotlinexample.github.R
 import org.rekotlinexample.github.actions.RepoDetailListAction
 import org.rekotlinexample.github.engine
@@ -55,6 +52,11 @@ class RepoListActivity : AppCompatActivity(),
 
     var mListOfRepos: List<RepoViewModel>? = null
     private var mRepoListViewAdapter: RepoListAdapter? = null
+
+    companion object {
+        const val REPO_DETAILS_CHANNEL = "repoInfo/details"
+        const val REPO_LIST_CHANNEL = "repoInfo/list"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
 //        super.onCreate(savedInstanceState)
@@ -96,37 +98,12 @@ class RepoListActivity : AppCompatActivity(),
 
 
     override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        //startRepoDetailActivity(position)
-       // startFlutterRepoActivity(position)
-        startFlutterFragment()
+        startRepoDetailsActivity(position)
     }
 
-    fun startFlutterRepoActivity(position: Int){
-//        val flutterView = FlutterView(this,)
-//
-//                Flutter.createView(
-//                this@RepoListActivity,
-//                lifecycle,
-//                "route1"
-//        )
-//        val layout = FrameLayout.LayoutParams(600, 800)
-//        layout.leftMargin = 100
-//        layout.topMargin = 200
-//        addContentView(flutterView, layout)
 
-        val defaultFlutter = FlutterActivity.createDefaultIntent(this@RepoListActivity)
-        startActivity(defaultFlutter)
-    }
-
-    fun startFlutterFragment() {
-
-        //val myFlutterFragment = MyFlutterFragment()
-//        supportFragmentManager.beginTransaction().replace(R.id.container, myFlutterFragment)
-//                .commit()
-
-//        val myFlutterIntent = Intent(this, MyFlutterActivity::class.java)
-//        myFlutterIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-//        this.startActivity(myFlutterIntent)
+// TODO: Pass the actual data
+    private fun startRepoDetailsActivity( position: Int) {
 
         val repoDetailsData = """
   {
@@ -147,46 +124,11 @@ class RepoListActivity : AppCompatActivity(),
                         .build(this)
         )
 
-        val repoDetailsChannelMethod = MethodChannel(engine.dartExecutor, MyFlutterActivity.REPO_DETAILS_CHANNEL)
-        // Handler().postDelayed({
+        val repoDetailsChannelMethod = MethodChannel(engine.dartExecutor, REPO_DETAILS_CHANNEL)
         repoDetailsChannelMethod.invokeMethod("dataToDetailFlutterComponent", repoDetailsData)
-
-
     }
 
-    fun startFlutterFragmentWayOne(){
-//        val myFlutterFragment = MyFlutterFragment()
-//        val tx = supportFragmentManager.beginTransaction()
-//        tx.replace(R.id.container, myFlutterFragment)
-//        tx.commit()
-    }
 
-    private fun createFlutterFragment() {
-
-
-
-        //Flutter
-
-//        val flutterFragment = MyFlutterFragment()
-//        val fragmentManager = fragmentManager
-
-//        flutterFragment = fi<FlutterFragment>(R.id.flutterfragment) as FlutterFragment
-//
-//        if (flutterFragment == null) {
-//            // No FlutterFragment exists yet. This must be the initial Activity creation. We will create
-//            // and add a new FlutterFragment to this Activity.
-//            //
-//            // This example uses defaults of "main" for the Dart entrypoint, and "/" as the initial route.
-//            flutterFragment = FlutterFragment.Builder().build<FlutterFragment>()
-//
-//            // This method assumes that there is a FrameLayout in the view hierarchy with an ID of CONTAINER_ID.
-//            // TAG_FLUTTER_FRAGMENT is a String of your choice to reference the added FlutterFragment.
-//            fragmentManager
-//                    .beginTransaction()
-//                    .add(CONTAINER_ID, flutterFragment, TAG_FLUTTER_FRAGMENT)
-//                    .commit()
-//        }
-    }
 
     fun startRepoDetailActivity(position: Int){
 
