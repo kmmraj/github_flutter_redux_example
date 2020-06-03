@@ -14,9 +14,7 @@ import io.flutter.plugin.common.MethodChannel
 import org.rekotlinexample.github.engine
 
 
-class MyFlutterActivity:
-//        FlutterFragmentActivity()
-        FlutterActivity()
+class MyFlutterActivity: FlutterActivity()
 {
 
     private lateinit var myFlutterFragment: MyFlutterFragment

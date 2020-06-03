@@ -15,11 +15,13 @@ import android.widget.ListView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import io.flutter.embedding.android.FlutterActivity
+import io.flutter.plugin.common.MethodChannel
 import org.rekotlin.StoreSubscriber
 import org.rekotlin.rekotlinrouterexample.MyFlutterActivity
 import org.rekotlin.rekotlinrouterexample.MyFlutterFragment
 import org.rekotlinexample.github.R
 import org.rekotlinexample.github.actions.RepoDetailListAction
+import org.rekotlinexample.github.engine
 import org.rekotlinexample.github.mainStore
 import org.rekotlinexample.github.routes.loginRoute
 import org.rekotlinexample.github.routes.repoDetailRoute
@@ -122,15 +124,32 @@ class RepoListActivity : AppCompatActivity(),
 //        supportFragmentManager.beginTransaction().replace(R.id.container, myFlutterFragment)
 //                .commit()
 
-        val myFlutterIntent = Intent(this, MyFlutterActivity::class.java)
-        myFlutterIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        this.startActivity(myFlutterIntent)
+//        val myFlutterIntent = Intent(this, MyFlutterActivity::class.java)
+//        myFlutterIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+//        this.startActivity(myFlutterIntent)
 
-//        startActivity(
-//                FlutterActivity
-//                        .withCachedEngine("my_engine_id")
-//                        .build(this)
-//        )
+        val repoDetailsData = """
+  {
+  "repoDetail": {
+    "stargazers": 222,
+    "forks": 33,
+    "languages": [
+      "kotlin",
+      "java"
+    ]    
+  }
+}
+        """.trimIndent()
+
+        startActivity(
+                FlutterActivity
+                        .withCachedEngine("my_engine_id")
+                        .build(this)
+        )
+
+        val repoDetailsChannelMethod = MethodChannel(engine.dartExecutor, MyFlutterActivity.REPO_DETAILS_CHANNEL)
+        // Handler().postDelayed({
+        repoDetailsChannelMethod.invokeMethod("dataToDetailFlutterComponent", repoDetailsData)
 
 
     }
