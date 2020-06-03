@@ -33,7 +33,6 @@ var mainStore = Store(state = null,
 
 private var mInstance: AppController? = null
 var router: Router<GitHubAppState>? = null
-var channel: KeyEventChannel? = null;
 lateinit var engine: FlutterEngine
 
 class AppController : Application() {

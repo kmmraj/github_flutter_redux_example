@@ -2,7 +2,6 @@ package org.rekotlin.rekotlinrouterexample
 
 
 import android.os.Bundle
-import android.os.Handler
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.plugin.common.MethodChannel
 // TODO - Check this one
@@ -32,7 +31,7 @@ class MyFlutterActivity:
         super.onCreate(savedInstanceState)
        // setContentView(R.layout.activity_my_flutter)
 
-        val someData = """
+        val repoDetailsData = """
   {
   "repoDetail": {
     "stargazers": 222,
@@ -92,10 +91,10 @@ class MyFlutterActivity:
 //            engine.platformChannel.channel.invokeMethod("dataToDetailFlutterComponent", someData)
 //        },500)
         val repoDetailsChannelMethod = MethodChannel(engine.dartExecutor, REPO_DETAILS_CHANNEL)
-        Handler().postDelayed({
-            repoDetailsChannelMethod.invokeMethod("dataToDetailFlutterComponent", someData)
-        },5000)
-        myFlutterFragment = MyFlutterFragment(someData)
+       // Handler().postDelayed({
+        repoDetailsChannelMethod.invokeMethod("dataToDetailFlutterComponent", repoDetailsData)
+       // },500)
+        //myFlutterFragment = MyFlutterFragment(someData)
 
     }
 
