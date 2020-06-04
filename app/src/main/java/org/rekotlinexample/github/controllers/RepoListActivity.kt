@@ -5,6 +5,7 @@ package org.rekotlinexample.github.controllers
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -52,13 +53,11 @@ class RepoListActivity : AppCompatActivity(),
     companion object {
         const val REPO_DETAILS_CHANNEL = "repoInfo/details"
         const val REPO_LIST_CHANNEL = "repoInfo/list"
+        const val TAG = "AppController"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-    //    FlutterMain.startInitialization(this);
         super.onCreate(savedInstanceState);
-//        GeneratedPluginRegistrant.registerWith(this);
         setContentView(R.layout.activity_repo_list)
         createRepoListView()
         mainStore.subscribe(this){
@@ -66,18 +65,18 @@ class RepoListActivity : AppCompatActivity(),
                     .skipRepeats()
         }
         mainStore.dispatch(RepoDetailListAction())
-//        repoDetailsChannelMethod = MethodChannel(engine.dartExecutor, REPO_DETAILS_CHANNEL)
-//        repoDetailsChannelMethod?.setMethodCallHandler { call, result ->
-//            val args = call.arguments
-//
-//            print("args are $args")
-//            print("methodCall.method is $call.method")
-//            when (call.method) {
-//                "handleMessageBack" -> {
-//                    print("Message from flutter is $result")
-//                }
-//            }
-//        }
+        repoDetailsChannelMethod.setMethodCallHandler { call, result ->
+            val args = call.arguments
+
+            Log.d(TAG,"args are $args")
+            Log.d(TAG,"methodCall.method is $call.method")
+            when (call.method) {
+                "handleMessageBack" -> {
+                    Log.d(TAG,"Message from flutter is $result")
+                    this.onBackPressed()
+                }
+            }
+        }
 
     }
 

@@ -112,17 +112,18 @@ class AppController : Application() {
 
         repoDetailsChannelMethod = MethodChannel(engine.dartExecutor, RepoListActivity.REPO_DETAILS_CHANNEL)
 
-        repoDetailsChannelMethod.setMethodCallHandler { call, result ->
-            val args = call.arguments
-
-            Log.d(TAG,"args are $args")
-            Log.d(TAG,"methodCall.method is $call.method")
-            when (call.method) {
-                "handleMessageBack" -> {
-                    Log.d(TAG,"Message from flutter is $result")
-                }
-            }
-        }
+//        repoDetailsChannelMethod.setMethodCallHandler { call, result ->
+//            val args = call.arguments
+//
+//            Log.d(TAG,"args are $args")
+//            Log.d(TAG,"methodCall.method is $call.method")
+//            when (call.method) {
+//                "handleMessageBack" -> {
+//                    Log.d(TAG,"Message from flutter is $result")
+//
+//                }
+//            }
+//        }
 
     }
 
