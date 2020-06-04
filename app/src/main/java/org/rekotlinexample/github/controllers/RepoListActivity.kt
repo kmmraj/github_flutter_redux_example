@@ -20,6 +20,7 @@ import org.rekotlinexample.github.R
 import org.rekotlinexample.github.actions.RepoDetailListAction
 import org.rekotlinexample.github.engine
 import org.rekotlinexample.github.mainStore
+import org.rekotlinexample.github.repoDetailsChannelMethod
 import org.rekotlinexample.github.routes.loginRoute
 import org.rekotlinexample.github.routes.repoDetailRoute
 import org.rekotlinexample.github.routes.welcomeRoute
@@ -27,12 +28,6 @@ import org.rekotlinexample.github.states.RepoListState
 import org.rekotlinrouter.Route
 import org.rekotlinrouter.SetRouteAction
 import org.rekotlinrouter.SetRouteSpecificData
-
-
-
-
-
-//import io.flutter.
 
 
 
@@ -52,6 +47,7 @@ class RepoListActivity : AppCompatActivity(),
 
     var mListOfRepos: List<RepoViewModel>? = null
     private var mRepoListViewAdapter: RepoListAdapter? = null
+   // var repoDetailsChannelMethod : MethodChannel? = null
 
     companion object {
         const val REPO_DETAILS_CHANNEL = "repoInfo/details"
@@ -70,6 +66,18 @@ class RepoListActivity : AppCompatActivity(),
                     .skipRepeats()
         }
         mainStore.dispatch(RepoDetailListAction())
+//        repoDetailsChannelMethod = MethodChannel(engine.dartExecutor, REPO_DETAILS_CHANNEL)
+//        repoDetailsChannelMethod?.setMethodCallHandler { call, result ->
+//            val args = call.arguments
+//
+//            print("args are $args")
+//            print("methodCall.method is $call.method")
+//            when (call.method) {
+//                "handleMessageBack" -> {
+//                    print("Message from flutter is $result")
+//                }
+//            }
+//        }
 
     }
 
@@ -124,7 +132,7 @@ class RepoListActivity : AppCompatActivity(),
                         .build(this)
         )
 
-        val repoDetailsChannelMethod = MethodChannel(engine.dartExecutor, REPO_DETAILS_CHANNEL)
+
         repoDetailsChannelMethod.invokeMethod("dataToDetailFlutterComponent", repoDetailsData)
     }
 

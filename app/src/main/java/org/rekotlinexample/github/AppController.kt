@@ -3,11 +3,13 @@ package org.rekotlinexample.github
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import com.squareup.leakcanary.LeakCanary
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.embedding.engine.FlutterEngineCache
 import io.flutter.embedding.engine.dart.DartExecutor
 import io.flutter.embedding.engine.systemchannels.KeyEventChannel
+import io.flutter.plugin.common.MethodChannel
 import io.flutter.view.FlutterMain
 import org.rekotlinexample.github.actions.LoggedInDataSaveAction
 import org.rekotlinexample.github.middleware.gitHubMiddleware
@@ -22,6 +24,7 @@ import org.rekotlinexample.github.states.RepoListState
 import org.rekotlinrouter.NavigationState
 import org.rekotlinrouter.Router
 import org.rekotlin.Store
+import org.rekotlinexample.github.controllers.RepoListActivity
 
 /**
  * Created by Mohanraj Karatadipalayam on 15/10/17.
@@ -34,8 +37,12 @@ var mainStore = Store(state = null,
 private var mInstance: AppController? = null
 var router: Router<GitHubAppState>? = null
 lateinit var engine: FlutterEngine
+lateinit var repoDetailsChannelMethod : MethodChannel
 
 class AppController : Application() {
+
+
+    val TAG = "AppController"
 
     //Creating sharedpreferences object
     //We will store the user data in sharedpreferences
@@ -43,7 +50,6 @@ class AppController : Application() {
         PreferenceApiService.getSharedPreferenceByName(context = applicationContext,
                 sharedPreferenceKey = PreferenceApiService.GITHUB_PREFS_NAME)
     }
-   // lateinit var engine: FlutterEngine
 
 
     override fun onCreate() {
@@ -103,6 +109,20 @@ class AppController : Application() {
         FlutterEngineCache
                 .getInstance()
                 .put("my_engine_id", engine)
+
+        repoDetailsChannelMethod = MethodChannel(engine.dartExecutor, RepoListActivity.REPO_DETAILS_CHANNEL)
+
+        repoDetailsChannelMethod.setMethodCallHandler { call, result ->
+            val args = call.arguments
+
+            Log.d(TAG,"args are $args")
+            Log.d(TAG,"methodCall.method is $call.method")
+            when (call.method) {
+                "handleMessageBack" -> {
+                    Log.d(TAG,"Message from flutter is $result")
+                }
+            }
+        }
 
     }
 
